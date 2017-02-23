@@ -1,6 +1,7 @@
 import com.amazonaws.auth.*;
 import com.amazonaws.services.securitytoken.AWSSecurityTokenService;
 import com.amazonaws.services.securitytoken.AWSSecurityTokenServiceClient;
+import com.amazonaws.services.securitytoken.AWSSecurityTokenServiceClientBuilder;
 import com.amazonaws.services.securitytoken.model.AssumeRoleWithWebIdentityRequest;
 import com.amazonaws.services.securitytoken.model.AssumeRoleWithWebIdentityResult;
 import com.amazonaws.services.securitytoken.model.Credentials;
@@ -13,7 +14,7 @@ public class AssumeRoleWithWebIdentity {
     private final String webIdentityToken;
     private final String roleSessionName;
 
-    static AWSSecurityTokenService stsClient = new AWSSecurityTokenServiceClient(new AnonymousAWSCredentials());
+    static AWSSecurityTokenService stsClient = AWSSecurityTokenServiceClientBuilder.defaultClient();
 
     public AssumeRoleWithWebIdentity(Builder builder) {
         this.roleArn = builder.roleArn;
