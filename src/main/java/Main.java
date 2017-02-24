@@ -1,9 +1,8 @@
+
 import org.python.util.PythonInterpreter;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.InputStreamReader;
+import javax.script.*;
+import java.io.*;
 
 public class Main {
 
@@ -12,18 +11,21 @@ public class Main {
 
         try{
 
-//            String prg = "import sys\nprint int(sys.argv[1])+int(sys.argv[2])\n";
-//            BufferedWriter out = new BufferedWriter(
-//                    new FileWriter("/Users/KAI/workstation/aws-scripts/dynamodb/get_students_list.py"));
-//            out.write(prg);
-//            out.close();
-//            int number1 = 10;
-//            int number2 = 32;
-            Process p = Runtime.getRuntime().exec("/Users/KAI/workstation/aws-scripts/dynamodb/get_students_list.py");
-            BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-            int ret = new Integer(in.readLine()).intValue();
-            System.out.println("value is : "+ret);
+        callPythonScript();
         }catch(Exception e){}
+    }
+
+
+    public static void callPythonScript() throws FileNotFoundException, ScriptException {
+        StringWriter writer = new StringWriter(); //ouput will be stored here
+        PythonInterpreter interpreter = new PythonInterpreter();
+//        ScriptEngineManager manager = new ScriptEngineManager();
+        ScriptContext context = new SimpleScriptContext();
+
+        context.setWriter(writer); //configures output redirection
+//        ScriptEngine engine = manager.getEngineByName("jython");
+//        interpreter.eval(new FileReader("D:\\HOME\\aws-scripts\\dynamodb\\get_students_list.py"), context);
+        System.out.println(writer.toString());
     }
 
 }

@@ -1,4 +1,6 @@
 import com.amazonaws.auth.*;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.securitytoken.AWSSecurityTokenService;
 import com.amazonaws.services.securitytoken.AWSSecurityTokenServiceClient;
 import com.amazonaws.services.securitytoken.AWSSecurityTokenServiceClientBuilder;
@@ -13,19 +15,21 @@ public class AssumeRoleWithWebIdentity {
     private final String roleArn;
     private final String webIdentityToken;
     private final String roleSessionName;
+    private final String region;
 
-    static AWSSecurityTokenService stsClient = AWSSecurityTokenServiceClientBuilder.defaultClient();
 
     public AssumeRoleWithWebIdentity(Builder builder) {
         this.roleArn = builder.roleArn;
         this.roleSessionName = builder.roleSessionName;
         this.webIdentityToken = builder.webIdentityToken;
+        this.region = builder.region;
     }
 
     public static class Builder{
         private String roleArn;
         private String webIdentityToken;
         private String roleSessionName;
+        private String region;
 
         public Builder(){}
 
@@ -38,14 +42,19 @@ public class AssumeRoleWithWebIdentity {
         }
         public Builder roleSessionName(String val){
             roleSessionName = val;return this;
+        }public Builder region(String val){
+            region = val;return this;
         }
 
         public AssumeRoleWithWebIdentity build(){
             return new AssumeRoleWithWebIdentity(this);
         }
+
     }
 
     public AWSCredentials getSessionCredentials(){
+        AWSSecurityTokenService stsClient = new AWSSecurityTokenServiceClient(new AnonymousAWSCredentials());
+        stsClient.setRegion(Region.getRegion(Regions.AP_NORTHEAST_1));
         AssumeRoleWithWebIdentityRequest stsReq = new AssumeRoleWithWebIdentityRequest();
         stsReq.setRoleArn(roleArn);
         stsReq.setWebIdentityToken(webIdentityToken);
